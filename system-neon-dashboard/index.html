@@ -1,0 +1,195 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>系统总览 · 深色霓虹仪表盘</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0f1c;--panel:#131a2e;--panel2:#19223a;--accent:#00f0ff;--gold:#f0c040;--green:#00e87b;--red:#ff4870;--purple:#a855f7;
+  --text:#e8edf5;--muted:#6b7da4;--soft:#8b9fcb;--line:rgba(255,255,255,.06);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif
+}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}
+.app{max-width:1760px;margin:0 auto;padding:28px 32px 48px}
+/* top bar */
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:36px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:18px;background:linear-gradient(135deg,#00f0ff,#7c3aed);display:grid;place-items:center;
+  font-weight:900;font-size:22px;color:#fff;box-shadow:0 0 32px rgba(0,240,255,.25)}
+.brand h1{font-size:22px;font-weight:900;margin:0}
+.topdate{color:var(--muted);font-size:13px;background:rgba(255,255,255,.04);padding:10px 18px;border-radius:999px;border:1px solid rgba(255,255,255,.06)}
+/* stats row */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:22px}
+.stat{background:linear-gradient(135deg,rgba(19,26,46,.92),rgba(25,34,58,.88));border:1px solid rgba(255,255,255,.06);
+  border-radius:18px;padding:18px;position:relative;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.stat:before{content:'';position:absolute;right:-30px;top:-30px;width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,rgba(0,240,255,.12),transparent 68%)}
+.slabel{color:var(--muted);font-size:13px;font-weight:700;sletter-spacing:.04em;margin-bottom:8px}
+.snum{font-size:30px;font-weight:950;letter-spacing:-.04em;margin-bottom:6px;background:linear-gradient(135deg,#e8edf5,#8b9fcb);-webkit-background-clip:text;background-clip:text;color:transparent}
+.snum.green{background:linear-gradient(135deg,#00e87b,#00f0ff);-webkit-background-clip:text;background-clip:text}
+.snum.gold{background:linear-gradient(135deg,#f0c040,#ff7060);-webkit-background-clip:text;background-clip:text}
+.snum.red{background:linear-gradient(135deg,#ff4870,#ff9040);-webkit-background-clip:text;background-clip:text}
+.shint{color:var(--soft);font-size:12px;font-weight:600}
+.sstat{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;margin-top:6px;padding:3px 7px;border-radius:999px;background:rgba(0,232,123,.12);color:var(--green)}
+.sstat.down{background:rgba(255,72,112,.12);color:var(--red)}
+/* grid layout */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
+.panel{background:linear-gradient(135deg,rgba(19,26,46,.92),rgba(25,34,58,.88));border:1px solid rgba(255,255,255,.06);
+  border-radius:22px;padding:22px;box-shadow:0 8px 32px rgba(0,0,0,.2);position:relative;overflow:hidden}
+.panel h3{font-size:15px;font-weight:900;color:var(--muted);letter-spacing:.06em;margin:0 0 16px;display:flex;align-items:center;gap:8px}
+.panel h3:after{content:'';flex:1;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.08),transparent)}
+/* donut/ring */
+.ring{width:110px;height:110px;border-radius:50%;margin:0 auto 8px;position:relative}
+.ring-cyber{background:conic-gradient(#00f0ff 0 35%,#a855f7 35% 55%,#f0c040 55% 78%,#ff4870 78% 100%)}
+.ring-data{background:conic-gradient(#00e87b 0 42%,#00f0ff 42% 65%,#f0c040 65% 82%,#a855f7 82% 100%)}
+.ring:after{content:attr(data-text);white-space:pre;position:absolute;inset:20px;background:var(--panel);border-radius:50%;
+  display:grid;place-items:center;font-weight:950;font-size:13px;color:var(--text);text-align:center;line-height:1.3}
+.ring-label{text-align:center;color:var(--muted);font-size:12px;font-weight:700;margin-bottom:4px}
+/* bars */
+.bar-list{display:grid;gap:10px}
+.bar-row{display:grid;grid-template-columns:84px 1fr 40px;gap:10px;align-items:center;font-size:13px;font-weight:700;color:var(--soft)}
+.bar-row .bar{height:10px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden}
+.bar-row .bar span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00f0ff,#a855f7)}
+.bar-row .bar.green span{background:linear-gradient(90deg,#00e87b,#00f0ff)}
+.bar-row .bar.gold span{background:linear-gradient(90deg,#f0c040,#ff7060)}
+.bar-row .bar.red span{background:linear-gradient(90deg,#ff4870,#ff9040)}
+/* line chart placeholder */
+.line-chart{height:120px;position:relative;margin-top:8px}
+.line-svg{width:100%;height:100%}
+.line-svg polyline{fill:none;stroke:url(#lineGrad);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.line-svg .area{fill:url(#areaGrad);opacity:.18}
+.line-dot{fill:#00f0ff;r:5}
+.x-labels{display:flex;justify-content:space-between;color:var(--muted);font-size:10px;font-weight:700;padding:4px 6px 0}
+/* table */
+.table-wrap{overflow-x:auto;border-radius:16px;border:1px solid rgba(255,255,255,.06)}
+table{width:100%;border-collapse:collapse;background:rgba(19,26,46,.88)}
+th{height:48px;text-align:left;color:var(--muted);font-size:12px;border-bottom:1px solid rgba(255,255,255,.06);padding:0 14px;background:rgba(25,34,58,.7);
+  white-space:nowrap;font-weight:900;letter-spacing:.03em}
+td{padding:13px 14px;border-bottom:1px solid rgba(255,255,255,.04);color:#d0d8e8;font-size:13px}
+tbody tr:hover{background:rgba(0,240,255,.035)}
+.status-tag{display:inline-flex;border-radius:999px;padding:5px 8px;font-size:11px;font-weight:900;background:rgba(0,240,255,.1);color:var(--accent)}
+.status-tag.green{background:rgba(0,232,123,.12);color:var(--green)}
+.status-tag.red{background:rgba(255,72,112,.12);color:var(--red)}
+.status-tag.gold{background:rgba(240,192,64,.12);color:var(--gold)}
+/* mini tags */
+.tag{display:inline-flex;font-size:11px;border-radius:999px;padding:4px 7px;background:rgba(255,255,255,.04);color:var(--soft);font-weight:800;margin:1px}
+.tblue{background:rgba(0,240,255,.1)!important;color:var(--accent)!important}
+.tgreen{background:rgba(0,232,123,.1)!important;color:var(--green)!important}
+.tgold{background:rgba(240,192,64,.1)!important;color:var(--gold)!important}
+.tred{background:rgba(255,72,112,.1)!important;color:var(--red)!important}
+.tpurple{background:rgba(168,85,247,.1)!important;color:var(--purple)!important}
+.pager{display:flex;justify-content:flex-end;gap:8px;padding:14px 18px;border-top:1px solid rgba(255,255,255,.04)}
+.pager button{height:32px;min-width:32px;border:1px solid rgba(255,255,255,.08);background:transparent;border-radius:10px;cursor:pointer;font-weight:800;color:var(--soft);font-size:13px}
+.pager button.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.pager button:disabled{opacity:.3;cursor:not-allowed}
+.pager span{color:var(--muted);font-size:12px;padding:0 4px}
+@media(max-width:1200px){.stats{grid-template-columns:repeat(3,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}.grid-2{grid-template-columns:1fr}}
+@media(max-width:700px){.stats,.grid-4{grid-template-columns:repeat(2,1fr)}.app{padding:18px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div class="brand"><div class="logo">Δ</div><h1>系统总览 · 财税驾驶舱</h1></div>
+    <div class="topdate">▸ 实时联动 · 数据来源 5 个表模块</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="slabel">总记录数</div><div class="snum">100</div><div class="shint">当前筛选范围</div><div class="sstat">▲ 5.2%</div></div>
+    <div class="stat"><div class="slabel">有效指标</div><div class="snum green">72</div><div class="shint">增长+稳定状态</div><div class="sstat">▲ 3.8%</div></div>
+    <div class="stat"><div class="slabel">预警指标</div><div class="snum red">33</div><div class="shint">需关注异常项</div><div class="sstat down">▼ 1.2%</div></div>
+    <div class="stat"><div class="slabel">联动数据表</div><div class="snum gold">5</div><div class="shint">会员·客户·成交·佣金·产品</div><div class="sstat">─</div></div>
+    <div class="stat"><div class="slabel">自动联动占比</div><div class="snum green">33%</div><div class="shint">实时同步数据</div><div class="sstat">▲ 2.1%</div></div>
+    <div class="stat"><div class="slabel">快速增长</div><div class="snum">33</div><div class="shint">环比增长趋势</div><div class="sstat green">▲ 6.7%</div></div>
+  </div>
+
+  <div class="grid-4">
+    <div class="panel">
+      <h3>数据来源分布</h3>
+      <div class="bar-list"><div class="bar-row"><span>客户管理</span><div class="bar green"><span style="width:100.0%"></span></div><b>20</b></div><div class="bar-row"><span>成交录单</span><div class="bar green"><span style="width:100.0%"></span></div><b>20</b></div><div class="bar-row"><span>佣金管理</span><div class="bar green"><span style="width:100.0%"></span></div><b>20</b></div><div class="bar-row"><span>产品库</span><div class="bar green"><span style="width:100.0%"></span></div><b>20</b></div><div class="bar-row"><span>会员记录</span><div class="bar green"><span style="width:100.0%"></span></div><b>20</b></div></div>
+    </div>
+    <div class="panel">
+      <h3>统计周期分布</h3>
+      <div class="bar-list"><div class="bar-row"><span>周</span><div class="bar gold"><span style="width:100.0%"></span></div><b>25</b></div><div class="bar-row"><span>月</span><div class="bar gold"><span style="width:100.0%"></span></div><b>25</b></div><div class="bar-row"><span>季度</span><div class="bar gold"><span style="width:100.0%"></span></div><b>25</b></div><div class="bar-row"><span>日</span><div class="bar gold"><span style="width:100.0%"></span></div><b>25</b></div></div>
+    </div>
+    <div class="panel">
+      <h3>指标状态分布</h3>
+      <div class="bar-list"><div class="bar-row"><span>稳定</span><div class="bar red"><span style="width:100.0%"></span></div><b>34</b></div><div class="bar-row"><span>预警</span><div class="bar red"><span style="width:97.05882352941177%"></span></div><b>33</b></div><div class="bar-row"><span>增长</span><div class="bar red"><span style="width:97.05882352941177%"></span></div><b>33</b></div></div>
+    </div>
+    <div class="panel">
+      <h3>更新方式分布</h3>
+      <div class="bar-list"><div class="bar-row"><span>手动校准</span><div class="bar"><span style="width:100.0%"></span></div><b>34</b></div><div class="bar-row"><span>定时刷新</span><div class="bar"><span style="width:97.05882352941177%"></span></div><b>33</b></div><div class="bar-row"><span>自动联动</span><div class="bar"><span style="width:97.05882352941177%"></span></div><b>33</b></div></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="panel">
+      <h3>趋势 · 近30天数据量变化</h3>
+      <svg class="line-svg" viewBox="0 0 400 120" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#00f0ff"/><stop offset="1" stop-color="#a855f7"/></linearGradient>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#00f0ff" stop-opacity=".28"/><stop offset="1" stop-color="#00f0ff" stop-opacity="0"/></linearGradient>
+        </defs>
+        <polyline class="area" points="0,110 30,90 60,100 90,75 120,60 150,80 180,50 210,40 240,55 270,35 300,30 330,45 360,20 380,15 400,22 400,120 0,120"/>
+        <polyline points="0,110 30,90 60,100 90,75 120,60 150,80 180,50 210,40 240,55 270,35 300,30 330,45 360,20 380,15 400,22"/>
+        <circle cx="0" cy="110" class="line-dot"/><circle cx="200" cy="46" class="line-dot"/>
+        <circle cx="400" cy="22" class="line-dot"/>
+      </svg>
+      <div class="x-labels"><span>6/1</span><span>6/5</span><span>6/10</span><span>6/15</span></div>
+      <div style="display:flex;gap:24px;margin-top:14px;font-size:12px;color:var(--muted)">
+        <span>◉ 日均新增 <b style="color:var(--accent)">≈8.7</b></span>
+        <span>◉ 峰值 <b style="color:var(--green)">6/12</b></span>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>会员联动数据流</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+        <div><div class="ring-label">会员 → 成交转化</div><div class="ring ring-cyber" data-text="转化率
+23%"></div></div>
+        <div><div class="ring-label">产品 → 佣金联动</div><div class="ring ring-data" data-text="联动率
+42%"></div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px">
+        <div style="text-align:center"><div style="font-size:10px;color:var(--muted)">会员</div><div style="font-weight:900;font-size:16px">5226</div></div>
+        <div style="text-align:center"><div style="font-size:10px;color:var(--muted)">产品</div><div style="font-weight:900;font-size:16px">5397</div></div>
+        <div style="text-align:center"><div style="font-size:10px;color:var(--muted)">成交</div><div style="font-weight:900;font-size:16px">2230</div></div>
+        <div style="text-align:center"><div style="font-size:10px;color:var(--muted)">待回访</div><div style="font-weight:900;font-size:16px;color:var(--gold)">2013</div></div>
+        <div style="text-align:center"><div style="font-size:10px;color:var(--muted)">佣金</div><div style="font-weight:900;font-size:16px">2699</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" style="padding:0;overflow:hidden">
+    <div style="padding:18px 22px;border-bottom:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;align-items:center">
+      <span style="font-weight:900;color:var(--muted);font-size:14px;letter-spacing:.04em">全部系统指标</span>
+      <span style="color:var(--soft);font-size:12px">共 100 条</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>指标名称</th><th>状态</th><th>当前数值</th><th>来源数据表</th><th>统计周期</th><th>更新方式</th><th>统计日期</th><th>指标口径</th>
+        </tr></thead>
+        <tbody>
+          <tr><td><strong style="font-weight:800">有效会员编号-001</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">684</td><td><span class="tag tgreen">客户管理</span></td><td>周</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-02</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由客户管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员充值金额编号-002</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">144</td><td><span class="tag tgold">成交录单</span></td><td>月</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-03</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由成交录单、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">产品在售数编号-003</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">55</td><td><span class="tag tgold">佣金管理</span></td><td>季度</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-04</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由佣金管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">客户转化率编号-004</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">789</td><td><span class="tag tblue">产品库</span></td><td>日</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-05</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由产品库、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">待回访数编号-005</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">139</td><td><span class="tag tgreen">会员记录</span></td><td>周</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-06</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由会员记录、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">成交金额编号-006</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">128</td><td><span class="tag tgreen">客户管理</span></td><td>月</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-07</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由客户管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">佣金待发放编号-007</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">537</td><td><span class="tag tgold">成交录单</span></td><td>季度</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-08</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由成交录单、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员总数编号-008</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">588</td><td><span class="tag tgold">佣金管理</span></td><td>日</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-09</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由佣金管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">有效会员编号-009</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">119</td><td><span class="tag tblue">产品库</span></td><td>周</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-10</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由产品库、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员充值金额编号-010</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">634</td><td><span class="tag tgreen">会员记录</span></td><td>月</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-11</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由会员记录、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">产品在售数编号-011</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">462</td><td><span class="tag tgreen">客户管理</span></td><td>季度</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-12</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由客户管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">客户转化率编号-012</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">62</td><td><span class="tag tgold">成交录单</span></td><td>日</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-13</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由成交录单、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">待回访数编号-013</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">21</td><td><span class="tag tgold">佣金管理</span></td><td>周</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-14</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由佣金管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">成交金额编号-014</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">162</td><td><span class="tag tblue">产品库</span></td><td>月</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-15</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由产品库、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">佣金待发放编号-015</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">36</td><td><span class="tag tgreen">会员记录</span></td><td>季度</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-16</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由会员记录、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员总数编号-016</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">763</td><td><span class="tag tgreen">客户管理</span></td><td>日</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-17</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由客户管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">有效会员编号-017</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">695</td><td><span class="tag tgold">成交录单</span></td><td>周</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-18</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由成交录单、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员充值金额编号-018</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">748</td><td><span class="tag tgold">佣金管理</span></td><td>月</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-19</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由佣金管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">产品在售数编号-019</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">588</td><td><span class="tag tblue">产品库</span></td><td>季度</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-20</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由产品库、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">客户转化率编号-020</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">459</td><td><span class="tag tgreen">会员记录</span></td><td>日</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-21</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由会员记录、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">待回访数编号-021</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">145</td><td><span class="tag tgreen">客户管理</span></td><td>周</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-22</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由客户管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">成交金额编号-022</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">247</td><td><span class="tag tgold">成交录单</span></td><td>月</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-23</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由成交录单、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">佣金待发放编号-023</strong></td><td><span class="status-tag red">预警</span></td><td style="font-weight:800">27</td><td><span class="tag tgold">佣金管理</span></td><td>季度</td><td><span class="tag tgold">定时刷新</span></td><td style="color:var(--muted)">2026-06-24</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由佣金管理、客户管理、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">会员总数编号-024</strong></td><td><span class="status-tag green">增长</span></td><td style="font-weight:800">193</td><td><span class="tag tblue">产品库</span></td><td>日</td><td><span class="tag tgreen">自动联动</span></td><td style="color:var(--muted)">2026-06-25</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由产品库、成交录单联动汇总</td></tr><tr><td><strong style="font-weight:800">有效会员编号-025</strong></td><td><span class="status-tag gold">稳定</span></td><td style="font-weight:800">744</td><td><span class="tag tgreen">会员记录</span></td><td>周</td><td><span class="tag tblue">手动校准</span></td><td style="color:var(--muted)">2026-06-26</td><td style="color:var(--soft);font-size:12px;max-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">由会员记录、客户管理、成交录单联动汇总</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <button disabled>‹</button>
+      <button class="active">1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>4</button>
+      <span>…</span>
+      <button>›</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
